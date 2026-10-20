@@ -83,7 +83,13 @@ export function parseSigenRows(rows: Cell[][]): ParseResult {
     res.warnings.push("Hittade ingen rubrikrad med 'solarEnergy'; filen ser inte ut som en MySigen-export.");
     return res;
   }
-  const header = rows[headerIdx].map(cellText);
+  let header = rows[headerIdx].map(cellText);
+  // MySigen saknar rubrik för tidskolumnen: dataraderna har en kolumn mer än
+  // rubrikraden och börjar med tidsstämpeln. Flytta då rubrikerna ett steg.
+  const firstData = rows.slice(headerIdx + 1).find((r) => r.some((c) => cellText(c) !== ""));
+  if (firstData && header[0] !== "" && parseTimestamp(firstData[0]) && !parseTimestamp(header[0]) && SIGEN_COLUMNS.includes(header[0] as (typeof SIGEN_COLUMNS)[number])) {
+    header = ["time", ...header];
+  }
   const col: Record<string, number> = {};
   for (const name of SIGEN_COLUMNS) {
     const i = header.indexOf(name);

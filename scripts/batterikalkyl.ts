@@ -172,9 +172,14 @@ async function main() {
   heading("3. Spotpriser");
   const pr = await loadPrices(fran, till, cfg.elomrade, cfg.prisKatalog, {
     offline: flag("--offline"),
-    onProgress: (done, total) => process.stderr.write(`\rHämtar priser ${done}/${total}`),
+    onProgress: (done, total) => process.stderr.isTTY && process.stderr.write(`\rHämtar priser ${done}/${total}`),
   });
   process.stderr.write("\n");
+  if (pr.hourly.size === 0) {
+    throw new Error(
+      `Inga spotpriser för ${fran} – ${till}. ${flag("--offline") ? `Kör utan --offline eller lägg elprisetjustnu-filer i ${cfg.prisKatalog}/${cfg.elomrade}/.` : "Kontrollera att www.elprisetjustnu.se går att nå."}`,
+    );
+  }
   const { spot, filled } = alignPrices(keys, pr.hourly);
   const meanSpot = spot.reduce((s, x) => s + x, 0) / T;
   say(`elprisetjustnu.se, ${cfg.elomrade}: ${pr.cached} dygn från cache, ${pr.fetched} hämtade. Medelspot ${nf2.format(meanSpot)} kr/kWh exkl. moms.`);
@@ -221,7 +226,7 @@ async function main() {
   for (let oi = 0; oi < options.length; oi++) {
     for (const s of strategies) {
       for (const mode of dispatchModes) {
-        process.stderr.write(`\rSimulerar ${++n}/${total}: ${options[oi].namn}, ${STRATEGY_LABEL[s]}, ${mode}        `);
+        process.stderr.isTTY && process.stderr.write(`\rSimulerar ${++n}/${total}: ${options[oi].namn}, ${STRATEGY_LABEL[s]}, ${mode}        `);
         const inp: SimInput = { d, forecast, buy: prices[mode].buy, sell: prices[mode].sell, hour };
         const res = simulate(s, inp, options[oi].b, simOpts);
         runs.set(runKey(oi, s, mode), { res, m: { [mode]: metrics(res, d, keys, prices[mode], options[oi].b) } });
@@ -284,7 +289,7 @@ async function main() {
   ];
   say(
     table(
-      ["Fall (8 kWh, historiska regler)", "Kostnad", "Köp", "Sälj", "Nätladdning", "Urladdn. vid sälj", "Cykler"],
+      ["Fall (8 kWh, historiska regler)", "Kostnad", "Köp", "Sälj", "Nätladdning", "Export från batteri", "Cykler"],
       [calRow("Verkligt utfall", actualM.historisk), ...strategies.map((s) => calRow(`Modell ${STRATEGY_LABEL[s]}`, M(0, s, "historisk"), base))],
     ),
   );

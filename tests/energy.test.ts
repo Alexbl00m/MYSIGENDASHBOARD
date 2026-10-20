@@ -110,6 +110,16 @@ describe("sigen-import", () => {
     expect(r.skippedTotal).toBe(1);
     expect(r.readings[1]).toMatchObject({ key: "2025-06-01T13", pv: 4.5, load: 0, discharge: 0.5, sell: 3 });
   });
+  it("hanterar MySigens rubrikrad utan tidskolumn", () => {
+    const r = parseSigenRows([
+      header.slice(1, 8),
+      ["2025-10-20 07:00:00", "0.0", "2.79", "0.0", "2.12", "1.47", "0.82", "--"],
+      ["total", "9445.7", "18164.81", "3327.18", "3151.03", "16380.39", "7485.13", "--"],
+    ]);
+    expect(r.readings).toHaveLength(1);
+    expect(r.readings[0]).toMatchObject({ key: "2025-10-20T07", pv: 0, load: 2.79, charge: 0, discharge: 2.12, buy: 1.47, sell: 0.82 });
+    expect(r.skippedTotal).toBe(1);
+  });
   it("summerar dubbla timmar (vintertid)", () => {
     const r = parseSigenRows([header, ["2025-10-26 02:00", 0, 1, 0, 0, 1, 0, "--"], ["2025-10-26 02:00", 0, 1, 0, 0, 1.5, 0, "--"]]);
     expect(r.readings).toHaveLength(1);

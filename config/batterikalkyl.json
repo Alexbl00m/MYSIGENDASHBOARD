@@ -5,11 +5,11 @@
   "dataKatalog": "data/sigen",
   "prisKatalog": "data/priser",
   "elomrade": "SE3",
-  "ofullstandigFore": "2025-04-01",
-  "simulering": { "fran": "2025-10-21", "till": "2026-10-20" },
+  "ofullstandigFore": "2025-04-18",
+  "simulering": { "fran": "2025-10-20", "till": "2026-10-19" },
 
   "kontrollsummor": {
-    "fran": "2025-10-21",
+    "fran": "2025-10-20",
     "till": "2026-10-20",
     "solKwh": 9446,
     "forbrukningKwh": 18165,

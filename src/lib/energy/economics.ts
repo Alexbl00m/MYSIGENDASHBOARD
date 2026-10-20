@@ -42,8 +42,8 @@ export interface Metrics {
   sellKwh: number;
   chargeKwh: number;
   dischargeKwh: number;
-  gridChargeKwh: number; // laddning utöver samtidigt solöverskott
-  dischargeWhileSellingKwh: number; // urladdning under timmar då huset säljer
+  gridChargeKwh: number; // laddning från nätet: Σ min(laddning, köp) per timme
+  dischargeWhileSellingKwh: number; // export från batteriet: Σ min(urladdning, sälj) per timme
   cycles: number; // ekvivalenta fulla cykler på användbar kapacitet
   monthly: Map<string, { costKr: number; buyKwh: number; sellKwh: number }>;
   dailySwingKwh: Map<string, number>; // största SOC-spann per dygn
@@ -76,8 +76,8 @@ export function metrics(
     m.sellKwh += res.gridSell[i];
     m.chargeKwh += res.cIn[i];
     m.dischargeKwh += res.dOut[i];
-    m.gridChargeKwh += Math.max(0, res.cIn[i] - Math.max(-d[i], 0));
-    if (res.gridSell[i] > 1e-6) m.dischargeWhileSellingKwh += res.dOut[i];
+    m.gridChargeKwh += Math.min(res.cIn[i], res.gridBuy[i]);
+    m.dischargeWhileSellingKwh += Math.min(res.dOut[i], res.gridSell[i]);
     const mk = keys[i].slice(0, 7);
     const e = m.monthly.get(mk) ?? { costKr: 0, buyKwh: 0, sellKwh: 0 };
     e.costKr += res.gridBuy[i] * p.buy[i] - res.gridSell[i] * p.sell[i];
