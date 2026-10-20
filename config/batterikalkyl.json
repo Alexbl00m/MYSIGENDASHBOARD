@@ -1,0 +1,97 @@
+{
+  "_kommentar": "Alla öre-belopp är exkl. moms. Nycklar i 'bekraftat' räknas som bekräftade; övriga antaganden markeras med ⚠ i resultatet.",
+  "bekraftat": [],
+
+  "dataKatalog": "data/sigen",
+  "prisKatalog": "data/priser",
+  "elomrade": "SE3",
+  "ofullstandigFore": "2025-04-01",
+  "simulering": { "fran": "2025-10-21", "till": "2026-10-20" },
+
+  "kontrollsummor": {
+    "fran": "2025-10-21",
+    "till": "2026-10-20",
+    "solKwh": 9446,
+    "forbrukningKwh": 18165,
+    "kopKwh": 16380,
+    "saljKwh": 7485,
+    "laddningKwh": 3327,
+    "urladdningKwh": 3151
+  },
+
+  "batteri": {
+    "befintligt": [{ "namn": "BAT 8.0", "kwh": 8.06, "maxKw": 4.0 }],
+    "vaxelriktareMaxKw": 10,
+    "huvudsakringMaxKw": 17,
+    "socMinPct": 5,
+    "socMaxPct": 100,
+    "turOchReturVerkningsgrad": 0.947,
+    "cykelkostnadKrPerKwh": 0,
+    "tillatExportFranBatteri": true
+  },
+
+  "erbjudanden": [
+    { "namn": "+1 BAT 6.0", "moduler": [{ "kwh": 6.03, "maxKw": 3.0 }], "prisKr": 19555, "giltigTill": "2026-10-31" },
+    { "namn": "+1 BAT 10.0", "moduler": [{ "kwh": 9.04, "maxKw": 4.5 }], "prisKr": 23195, "giltigTill": "2026-10-31" },
+    { "namn": "+2 BAT 10.0", "moduler": [{ "kwh": 9.04, "maxKw": 4.5 }, { "kwh": 9.04, "maxKw": 4.5 }], "prisKr": 40442, "giltigTill": "2026-10-31" }
+  ],
+
+  "strategi": {
+    "touLaddfonster": [0, 6],
+    "mpcSocStegKwh": 0.2,
+    "dpSocStegKwh": 0.1
+  },
+
+  "avtal": {
+    "momsPct": 25,
+    "perioder": [
+      {
+        "fran": "2024-01-01",
+        "till": "2025-12-31",
+        "paslagOre": 6,
+        "natOverforingOre": 25,
+        "energiskattOre": 43.9,
+        "natnyttaOre": 4,
+        "saljTillaggOre": 0,
+        "skattereduktionOre": 60,
+        "effektavgiftKrPerKw": 0,
+        "manadsavgiftKr": 0
+      },
+      {
+        "fran": "2026-01-01",
+        "till": "2099-12-31",
+        "paslagOre": 6,
+        "natOverforingOre": 25,
+        "energiskattOre": 36.0,
+        "natnyttaOre": 4,
+        "saljTillaggOre": 0,
+        "skattereduktionOre": 0,
+        "effektavgiftKrPerKw": 0,
+        "manadsavgiftKr": 0
+      }
+    ]
+  },
+
+  "kanslighet": {
+    "elprisAndring": 0.3,
+    "kapacitetsforlustPerAr": 0.02,
+    "horisontAr": 15
+  },
+
+  "elbil": {
+    "troskelKw": 3,
+    "minTimmar": 2,
+    "fonsterTimmar": 4,
+    "laddboxMaxKw": 11,
+    "laddboxMinKw": 1.4,
+    "dagFonster": [9, 17],
+    "manader": [4, 5, 6, 7, 8, 9],
+    "andelHemma": [0.3, 0.5, 0.7]
+  },
+
+  "vinter": {
+    "manader": [11, 12, 1, 2],
+    "dyraTimmar": [6, 7, 8, 16, 17, 18, 19, 20],
+    "nattTimmar": [22, 23, 0, 1, 2, 3, 4, 5]
+  }
+}
