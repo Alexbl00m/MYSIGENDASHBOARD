@@ -5,3 +5,6 @@ results/
 .env
 .env.*
 !.env.example
+
+# teardown skill build/capture scratch output
+teardown-out/
