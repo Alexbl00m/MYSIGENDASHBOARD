@@ -63,8 +63,8 @@ Poses then follow from the car height `y` alone (2:1 kinematics):
 `node shared/check.mjs` works each of these by hand and asserts it against the model (output in `CHECK.txt`, all pass).
 
 **1. Sheave speed.** With 2:1 roping the rope runs at 2v. n = 2 × 1.0 / (π × 0.48) = 1.3263 rev/s = **79.58 rpm**.
-A vendor listing quotes 79.6 r/min at 5.7 kW. That matches 480 mm at 2:1 and 1.0 m/s, and rules out 400 mm, which
-would give 95.5 rpm. ω = 2v / R = 2 / 0.24 = **8.333 rad/s**.
+A vendor listing quotes 79.6 r/min at 5.7 kW. That listing is labelled **MX06**, not MX10, so treat this as weak
+support: the figure matches a 480 mm sheave at 2:1 and 1.0 m/s, while 400 mm would give 95.5 rpm. ω = 2v / R = 2 / 0.24 = **8.333 rad/s**.
 
 **2. Rated torque.** 5700 W / 8.333 rad/s = **684 N·m** (D).
 
